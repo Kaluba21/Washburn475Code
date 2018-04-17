@@ -14,18 +14,12 @@
 		current_layer.CTM.mapPoints(endpts, endpts, 2); 
 		vector<Edge> new_edges = Clipper(endpts[0], endpts[1], 1); //if all else fails, debug clipper :(
 		for(int i = 0; i < new_edges.size(); i++){
-			//printf("Pt0: (%f, %f) , Pt1: (%f, %f)\n", endpts[0].fX, endpts[0].fY, endpts[1].fX, endpts[1].fY); 
-			printf("Points: P0: (%f, %f) , P1: (%f, %f) -> edge: (TopY: %d , BotY: %d , currX: %f, slope: %f)\n", endpts[0].fX, endpts[0].fY, endpts[1].fX, endpts[1].fY, new_edges.at(i).top_y, new_edges.at(i).bot_y, new_edges.at(i).curr_x, new_edges.at(i).slope); 	
 			edges.push_back(new_edges.at(i));
 		}   
 	} 
 		
 		if(edges.size() >= 2){
-			sort(edges.begin(), edges.end());
-			printf("SORTED EDGES: \n");
-			for(int i = 0; i < edges.size(); i++){
-				printf("edge: (TopY: %d , BotY: %d , currX: %f , slope: %f , wind: %d)\n", edges.at(i).top_y, edges.at(i).bot_y, edges.at(i).curr_x, edges.at(i).slope, edges.at(i).winding); 
-			}
+			sort(edges.begin(), edges.end()); 
 
 			int top = edges.front().top_y, bottom = edges.back().bot_y; 
 
@@ -82,17 +76,12 @@
 					if(next_index < edges.size()){
 						next = edges.at(next_index); 
 					}   
-					//printf("Before resort, size = %zu\n", edges.size()); 
-					//printf("curr_edge: %f and curr_index: %d\n", curr_edge.curr_x, curr_index); 
-					//for(int i = 0; i < edges.size(); i++){printf("edge %d: %f\n", i, edges.at(i).curr_x);}
 					resortBackwards(curr_index, edges); 
 					if(next_index == edges.size()){
 						break; 
 					}
 					curr_edge = next;
 					curr_index = next_index; 
-					//printf("After resort, size = %zu\n", edges.size()); 
-					//for(int i = 0; i < edges.size(); i++){printf("edge %d: %f\n", i, edges.at(i).curr_x);}
 					}
 			  }
 	}
